@@ -1,0 +1,8 @@
+{
+    "jwt_config": {
+      "secretKey": "ytuEy#r5th$52D3Hcfsdg4",
+      "expiresIn": 86400
+    },
+    
+  
+}
