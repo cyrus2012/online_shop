@@ -4,5 +4,12 @@
       "expiresIn": 86400
     },
     
-  
+    "postgresql_config":{
+      "user": "postgres",
+      "password": "123456",
+      "host": "127.0.0.1",
+      "port": 5432,
+      "database": "online_shop",
+      "max":10
+    },
 }

@@ -3,26 +3,33 @@
 **
 */
 
-function login(username, password, cb){
-    //user info should be retrieve from database
-    const tempuser = {
-        username: "Tom",
-        password: "321",
-    };
+import ManagerRepository from "../repository/interface/managerAccess.js";
+import managerDB from "../repository/implement/postgresManager.js";
+import inMemoryManager from "../repository/implement/inMemoryManager.js";
 
-    if(username != tempuser.username){
-        return cb("user does not exist");
-    }
+const managerRepository = new ManagerRepository(managerDB);
+//const managerRepository = new ManagerRepository(inMemoryManager);
+//const test = await managerRepository.getUserByName("Tommy");
+//console.log(test);
 
-    if(password != tempuser.password){
+
+async function login(username, password, cb){
+
+    const row = await managerRepository.getUserByName(username);
+    
+    
+    if(!row)
+        return cb("user donest not exist");
+
+    if(password != row.password){
         return cb("incorrect password");
     }
 
     //simulate user info from database
     const user = {
-        username: tempuser.username,
-        id: 2,
-        rid: 3,
+        username: row.name,
+        id: row.id,
+        rid: row.role_id,
     };
 
     return cb(null, user);
