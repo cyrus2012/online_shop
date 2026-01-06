@@ -3,9 +3,9 @@
 **
 */
 
-import ManagerRepository from "../repository/interface/managerAccess.js";
+import ManagerRepository from "../repository/interface/ManagerAccess.js";
 import managerDB from "../repository/implement/postgresManager.js";
-import inMemoryManager from "../repository/implement/inMemoryManager.js";
+//import inMemoryManager from "../repository/implement/inMemoryManager.js";
 
 const managerRepository = new ManagerRepository(managerDB);
 //const managerRepository = new ManagerRepository(inMemoryManager);
@@ -15,24 +15,27 @@ const managerRepository = new ManagerRepository(managerDB);
 
 async function login(username, password, cb){
 
-    const row = await managerRepository.getUserByName(username);
+    await managerRepository.getUserByName(username, function(err, userRow){
+        if(err)
+            cb("Database Server has problem");
+
+        if(!userRow)
+            return cb("User does not exist");    
+
+        if(password != userRow.password){
+            return cb("incorrect password");
+        }
+
+        const user = {
+            username: userRow.name,
+            id: userRow.id,
+            rid: userRow.role_id,
+        };
+
+        return cb(null, user);
+
+    });
     
-    
-    if(!row)
-        return cb("user donest not exist");
-
-    if(password != row.password){
-        return cb("incorrect password");
-    }
-
-    //simulate user info from database
-    const user = {
-        username: row.name,
-        id: row.id,
-        rid: row.role_id,
-    };
-
-    return cb(null, user);
 }
 
 

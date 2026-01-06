@@ -1,17 +1,12 @@
 import db from "../../module/postgres_db.js";
 import managerModel from "../models/managerModel.js";
 
-async function getUserByid(userId){
-    const result = await db.find(managerModel.table, {id: userId});
-
-    return result.rows[0];
-
+async function getUserByid(userId, cb){
+    return await db.findOne(managerModel.table, {id: userId}, cb);
 }
 
-async function getUserByName(username){
-    const result = await db.find(managerModel.table, {name: username});
-
-    return result.rows[0];
+async function getUserByName(username, cb){
+    return await db.findOne(managerModel.table, {name: username}, cb);
 }
 
 export default {getUserByid, getUserByName};

@@ -12,17 +12,18 @@ const pool = new Pool({
     max: dbConfig.max
 });
 
-function query(text, params){
+async function query(text, params){
     
-    return pool.query(text, params);
+    return await pool.query(text, params);
 }
 
 /**
  * 
  * @param {String} table name of database table
- * @param {Object} conditions its property name is the column name of the table
+ * @param {Object} conditions its property name and value is the column name of the table and the corresponding value
+ * @param {function(error, info)} cb info is a match row in the table. Null when there is not match row.
  */
-function find(table, conditions){
+async function findOne(table, conditions, cb){
     var text = `SELECT * FROM ${table} WHERE `;
 
     const params = [];
@@ -38,10 +39,20 @@ function find(table, conditions){
 
     //console.log("db query: " + text);
     //console.log("param: " + params);
-    return query(text, params);
+     try{
+        const result = await query(text, params);
+        if(result.rows.length === 0){
+            return cb(null, null);
+        }
+
+        return cb(null, result.rows[0]);
+     }catch(err){
+        console.log(err);
+        return cb("Accessing database has problem");
+     }
 
 }
 
 
 
-export default {query, find};
+export default {query, findOne};

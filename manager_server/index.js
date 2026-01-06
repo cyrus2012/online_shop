@@ -1,12 +1,11 @@
 import express from "express";
 import formatResponse from "./middleware/formatResponse.js";
-import category from "./routes/category.js";
-import goods from "./routes/goods.js";
 //import auth, {login} from "./routes/auth.js";
 //import login from "./middleware/user_auth.js";
-import managerService from "./service/ManagerService.js";
 import sys_passport from "./middleware/passport.js";
 import ManagerService from "./service/ManagerService.js";
+import RoleService from "./service/RoleService.js";
+import authorization from "./module/authorization.js";
 
 
 
@@ -18,14 +17,18 @@ const PORT = 4000;
 app.use(express.urlencoded({ extended: true }));
 app.use(formatResponse);
 
+
+sys_passport.setup(ManagerService.login);
+authorization.setAuthorizationFunction(RoleService);
+
+//const category = await import("./routes/category.js");
+import category from "./routes/category.js";
+import goods from "./routes/goods.js";
+
 app.get("/", (req, res) => {
     //res.send("welcome");
     res.sendResult("welcome", 200, "success");
 });
-
-
-sys_passport.setup(ManagerService.login);
-
 
 
 app.use("/sys_api/login", sys_passport.login);

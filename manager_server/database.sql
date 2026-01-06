@@ -22,11 +22,11 @@ CREATE TABLE role(
 );
 
 CREATE TABLE permission(  
-    permission_id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    permission_id int NOT NULL PRIMARY KEY,
     permission_name VARCHAR(255) NOT NULL,
     permission_pid int NOT NULL,
-    permission_control varchar(128) NOT NULL,
-    permission_action varchar(128) NOT NULL,
+    permission_control varchar(128),
+    permission_action varchar(128),
     permission_level int NOT NULL
 );
 

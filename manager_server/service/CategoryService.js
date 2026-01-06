@@ -1,17 +1,23 @@
 
 
 function addCategory(cb){
-    cb(null, "add new category function");
+    return cb(null, "add new category function");
 }
 
-function getAllCategory(cb){
-    cb(null, "get All category function");
+function getAllCategories(cb){
+    return cb(null, "get All category function");
 }
 
 
 function getCategoryById(cb){
-    cb(null, "get category by id function");
+    return cb(null, "get category by id function");
 }
 
+function updateCategory(cb){
+    return cb(null, "update category function");
+}
+function deleteCategory(cb){
+    return cb(null, "delete function");
+}
 
-export {addCategory, getAllCategory, getCategoryById};
+export {addCategory, getAllCategories, getCategoryById, updateCategory, deleteCategory};

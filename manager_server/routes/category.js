@@ -1,5 +1,5 @@
 import express from "express";
-import authorization from "../module/authenticate.js";
+import authorization from "../module/authorization.js";
 
 const router = express.Router();
 
@@ -10,12 +10,12 @@ const categoryService =  await authorization.getService("CategoryService");
 router.get("/", (req, res) => {
     
     //console.log("type of getAllCategory " + typeof categoryService["getAllCategory"]);
-    categoryService["getAllCategory"]((err, data) =>{
+    categoryService["getAllCategories"]((err, data) =>{
         if(err)
             return res.sendResult(null, 400, err);
 
         return res.sendResult(data, 200, 'success');
-    });
+    })(req, res);
     //res.sendResult("this is category page", 200, 'success');
 });
 
