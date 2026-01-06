@@ -19,8 +19,8 @@ function requestPermissionCheck(serviceName, actionName, serviceModule, actionFu
         //console.log(arguments);
 
         return function(req, res){
-            const role_id = req.body.rid;
-            //console.log("rid is " + role_id);
+            const role_id = req.userInfo.role_id; //userInfo property comes from passport.tokenAuth function.
+            //console.log("role id is " + role_id);
 
             //check user role permission and protected Function
             if(!role_id || isNaN(role_id))
@@ -29,7 +29,7 @@ function requestPermissionCheck(serviceName, actionName, serviceModule, actionFu
 
             if(global.serviceAuthorizationFunction){
                 //console.log("call global.serviceAuthorizationFunction()");
-                global.serviceAuthorizationFunction (req.body.rid, serviceName, actionName, function(err, isPermitted){
+                global.serviceAuthorizationFunction (role_id, serviceName, actionName, function(err, isPermitted){
                     if(err)
                         return res.sendResult(null, 400, err);
 

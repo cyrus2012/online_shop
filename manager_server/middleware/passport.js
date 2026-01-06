@@ -31,7 +31,9 @@ function setup (inject_function){
                 if(err)
                     return done("error in token auth: " + err.message);
 
-                return done(null, "token auth");
+                //console.log("jtw decode: ");
+                //console.log(decode);
+                return done(null, decode);
             });
             
         }
@@ -49,7 +51,7 @@ function login(req, res, next){
         if(!user)
             return res.sendResult(null, 400, "user not found");
 
-        const token = jwt.sign({uid:user.id, rid:user.rid}, jwt_config.get("secretKey"),
+        const token = jwt.sign({user_id:user.id, role_id:user.rid}, jwt_config.get("secretKey"),
                         {expiresIn:jwt_config.get("expiresIn")});
 
         user.token = "Bearer " + token;
@@ -62,16 +64,21 @@ function login(req, res, next){
 function tokenAuth(req, res, next){
     
     passport.authenticate('bearer', {session:false}, 
-        (err, user, info, status) => {
+        (err, tokenData, info, status) => {
             if(err){
                 return res.sendResult(err, 400, "invalid token");
             }
 
-            if(!user){
+            if(!tokenData){
                 return res.sendResult(null, 400, "invalid token");
             }
 
+            req.userInfo = {user_id: tokenData.user_id, role_id:tokenData.role_id};
+            
+            //console.log("what is tokenData?");
+            //console.log(tokenData);
             //return res.sendResult(user, 200, "success");
+
             next();
         })(req, res, next);
 }
