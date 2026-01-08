@@ -1,3 +1,7 @@
+/*
+This code is apply to PostgreSQL
+*/
+
 Create DATABASE online_ship;
 
 /* create manager table to store user info*/
@@ -52,3 +56,36 @@ CREATE TABLE category(
 ALTER TABLE "manager" ADD FOREIGN KEY ("role_id") REFERENCES "role"("role_id");
 
 ALTER TABLE "permission_api" ADD FOREIGN KEY ("permission_id") REFERENCES "permission"("permission_id");
+
+
+
+
+
+
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(100,0,'goods management',0);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(101,100,'category management',1);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(102,100,'category parameter',1);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(103,100,'goods list',1);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(104,101,'add category',2);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(105,101,'get all category',2);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(106,101,'update category',2);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(107,101,'get a category',2);
+INSERT INTO "permission"("permission_id","permission_pid","permission_name","permission_level") VALUES(108,101,'delete category',2);
+
+
+
+INSERT INTO "permission_api"("permission_id") VALUES(100);
+INSERT INTO "permission_api"("permission_id","api_service","api_action","api_path") VALUES(101,'CategoryService','getAllCategories','category');
+INSERT INTO "permission_api"("permission_id","api_service","api_action","api_path") VALUES(102,'CategoryService','addCategory','category');
+INSERT INTO "permission_api"("permission_id","api_service","api_action","api_path") VALUES(10,'CategoryService','getCategoryById','category');
+INSERT INTO "permission_api"("permission_id","api_service","api_action","api_path") VALUES(10,'CategoryService','updateCategory','category');
+INSERT INTO "permission_api"("permission_id","api_service","api_action","api_path") VALUES(10,'CategoryService','deleteCategory','category');
+
+
+
+INSERT INTO "role"("name","permission_ids","role_desc") VALUES('operator','100,101,104,105','operator');
+INSERT INTO "role"("name","permission_ids") VALUES('test','100,104');
+
+
+
+INSERT INTO "manager"("name","role_id","email","state","mobile","password","create_time") VALUES('Tommy',1,'abc@esd.com',0,98765432,'123456','2026-01-08');
